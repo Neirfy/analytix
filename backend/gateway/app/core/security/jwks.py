@@ -1,6 +1,6 @@
 import time
 import httpx
-from app.core.config import settings
+from core.config import settings
 
 
 class JWKSCache:

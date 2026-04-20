@@ -3,7 +3,7 @@ from starlette.responses import JSONResponse
 from fastapi import Request
 from jose import jwt, JWTError
 
-from app.core.security.jwks import jwks_cache
+from core.security.jwks import jwks_cache
 
 
 class JWTMiddleware(BaseHTTPMiddleware):

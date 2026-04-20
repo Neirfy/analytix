@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Request
-from app.proxy.client import forward_request
+from proxy.client import forward_request
 
 proxy_router = APIRouter()
 

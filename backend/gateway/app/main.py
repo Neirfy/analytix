@@ -1,7 +1,7 @@
 from fastapi import FastAPI
-from app.core.middleware.auth import JWTMiddleware
+from core.middleware.auth import JWTMiddleware
 
-from app.proxy.router import proxy_router
+from proxy.router import proxy_router
 
 app = FastAPI(title="Gateway")
 
