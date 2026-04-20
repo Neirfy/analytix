@@ -1,0 +1,16 @@
+from fastapi import APIRouter, Request
+from app.proxy.client import forward_request
+
+proxy_router = APIRouter()
+
+
+@proxy_router.api_route(
+    "/{service}/{path:path}",
+    methods=["GET", "PATCH", "POST", "PUT", "DELETE"],
+)
+async def proxy(
+    service: str,
+    path: str,
+    request: Request,
+):
+    return await forward_request(service, path, request)
