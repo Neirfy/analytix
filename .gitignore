@@ -208,5 +208,5 @@ __marimo__/
 
 
 # IDE
-.vscode
-.DS_store
+*.vscode
+*.DS_store
