@@ -2,7 +2,7 @@ services:
   gateway:
     container_name: gateway
     build: ./gateway
-    command: "uvicorn main:app --host 0.0.0.0 --port 8000"
+    command: "uvicorn main:app --host 0.0.0.0"
     env_file:
       - ./gateway/.env
     ports:
@@ -11,8 +11,8 @@ services:
       - rabbitmq
       - redis-db
       - postgres-db
-      # - authn
-      # - authz
+      - authn
+      # - authz TODO
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -36,5 +36,27 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data 
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"
+
+  authn:
+    container_name: authn
+    build: ./authn-service
+    command: "uvicorn main:app --host 0.0.0.0"
+    environment:
+      - PYTHONUNBUFFERED=1
+    env_file:
+      - ./authn-service/.env
+    expose:
+      - "8000"
+    # ports:
+    #   - "8001:8000"
+    volumes:
+      - ./authn-service/app:/app
+
+
+volumes:
+  postgres_data:

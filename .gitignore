@@ -206,7 +206,9 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
+# Migrations
+**/versions/*
 
 # IDE
-*.vscode
-*.DS_Store
+**.vscode
+**.DS_Store

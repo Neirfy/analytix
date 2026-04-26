@@ -7,6 +7,15 @@ from core.security.jwks import jwks_cache
 
 
 class JWTMiddleware(BaseHTTPMiddleware):
+    PUBLIC_PATHS = (
+        "/authn/login",
+        "/authn/register",
+        "/docs",
+        "/redoc",
+        "/openapi.json",
+        "/docs/oauth2-redirect",
+    )
+
     async def dispatch(
         self,
         request: Request,
@@ -14,7 +23,13 @@ class JWTMiddleware(BaseHTTPMiddleware):
     ):
         path = request.url.path
 
-        if path.startswith("/public"):  # TODO chanche route
+        if (
+            path in self.PUBLIC_PATHS
+            # or any(path.startswith(p + "/") for p in self.PUBLIC_PATHS)
+            or path.startswith("/docs")
+            or path.startswith("/openapi.json")
+            or path.startswith("/redoc")
+        ):
             return await call_next(request)
 
         auth = request.headers.get("Authorization")

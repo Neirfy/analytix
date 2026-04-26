@@ -2,8 +2,9 @@ import httpx
 
 
 SERVICE_MAP = {
-    "authn": "http://authn:8000",  # TODO
+    "authn": "http://authn:8000",
     "authz": "http://authz:8000",  # TODO
+    "users": "http://users:8000",  # TODO
 }
 
 
