@@ -1,7 +1,7 @@
 .PHONY: docker up down recreate migrate-all-revision migrate-all-up migrate-% upgrade-% help
 
-SERVICES = authn 
-# authz user profile schedule chat TODO
+SERVICES = authn users
+# authz  profile schedule chat TODO
 
 msg ?= init
 
