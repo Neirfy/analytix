@@ -1,0 +1,86 @@
+services:
+  gateway:
+    container_name: gateway
+    build: ./gateway
+    command: "uvicorn main:app --host 0.0.0.0"
+    env_file:
+      - ./gateway/.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - rabbitmq
+      - redis-db
+      - postgres-db
+      - authn
+      # - authz TODO
+      # - users
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    # expose:
+    #   - "5672"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  redis-db:
+    image: redis:7
+    container_name: redis
+    # expose:
+    #   - "6381"
+    ports:
+      - "6381:6379"
+
+  postgres-db:
+    image: postgres:16
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data 
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+
+  authn:
+    container_name: authn
+    build: ./authn-service
+    command: "uvicorn main:app --host 0.0.0.0"
+    environment:
+      - PYTHONUNBUFFERED=1
+    env_file:
+      - ./authn-service/.env
+    # expose:
+    #   - "8000"
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./authn-service/app:/app
+
+  users:
+    container_name: users
+    build: 
+      context: ./users-service
+      dockerfile: ./docker/Dockerfile 
+      target: prod
+    # command: "uvicorn main:app --host 0.0.0.0 --reload"
+    environment:
+      - PYTHONUNBUFFERED=1
+    env_file:
+      - ./users-service/.env
+    expose:
+      - "8000"
+    ports:
+      - "8002:8000"
+    volumes:
+      - ./users-service/app:/app
+
+volumes:
+  postgres_data:
+    driver: local
+    # name: backend_postgres_data

@@ -1,9 +1,15 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
+from typing import Union
 from uuid import UUID
 
 from models.user import UsersUser
-from schemas.user import CreateUserSchema, UpdateUserSchema
+from schemas.user import (
+    CreateUserSchema,
+    UpdateUsernameSchema,
+    UpdateEmailSchema,
+    UpdatePhoneSchema,
+)
 
 
 class UserRepository:
@@ -22,7 +28,8 @@ class UserRepository:
     ):
         user = UsersUser(
             username=data.username,
-            # email=data.email,
+            email=data.email,
+            phone=data.phone,
         )
 
         db.add(user)
@@ -50,7 +57,7 @@ class UserRepository:
         self,
         db: AsyncSession,
         user_id: UUID,
-        data: UpdateUserSchema,
+        data: Union[UpdateUsernameSchema, UpdateEmailSchema, UpdatePhoneSchema],
     ):
         user = await self.get_by_id(db, user_id)
 

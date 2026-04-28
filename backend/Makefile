@@ -16,6 +16,12 @@ recreate:
 docker:
 	docker compose up -d --build
 
+dev:
+	docker compose -f docker-compose.dev.yml up -d --build
+
+tests:
+	docker compose -f docker-compose.test.yml up --build --abort-on-container-exit
+
 # =========================
 # MIGRATIONS ALL
 # =========================
@@ -53,3 +59,10 @@ help:
 	@echo "migrate-all-up"
 	@echo "migrate-SERVICE msg=init"
 	@echo "upgrade-SERVICE"
+
+
+
+# curl http://localhost:8000/users/me \
+#   -H "X-User-Id: c28e1131-6a70-4f6c-8480-70d1b058ef55" \
+#   -H "X-Roles: admin" \
+#   -H "Authorization: Bearer test"

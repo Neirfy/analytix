@@ -1,6 +1,5 @@
 from fastapi import FastAPI
-from handlers.users import router
-from handlers.update import router as update
+from handlers.router import router
 
 
 app = FastAPI(
@@ -8,5 +7,5 @@ app = FastAPI(
     docs_url="/docs",
     openapi_url="/openapi.json",
 )
+
 app.include_router(router)
-app.include_router(update)

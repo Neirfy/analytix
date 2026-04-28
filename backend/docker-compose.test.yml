@@ -1,0 +1,15 @@
+services:
+  # authn-tests:
+  #   TODO
+
+  # authz-tests:
+  #   TODO
+
+  users-tests:
+    build:
+      context: ./users-service
+      dockerfile: ./docker/Dockerfile
+      target: dev
+    container_name: users-tests
+    volumes:
+      - ./users-service/app:/app

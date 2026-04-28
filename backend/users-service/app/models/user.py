@@ -18,6 +18,8 @@ class UsersUser(Base):
         default=uuid.uuid4,
     )
     username: Mapped[str] = mapped_column(String, unique=True)
+    email: Mapped[str] = mapped_column(String, nullable=True)
+    phone: Mapped[str] = mapped_column(String, nullable=True)
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime,
