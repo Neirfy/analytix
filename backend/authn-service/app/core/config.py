@@ -8,6 +8,8 @@ class Settings(BaseSettings):
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
     POSTGRES_DB: str
+
+    REDIS_PORT: int
     REDIS_PASSWORD: str
 
     @property
@@ -27,13 +29,15 @@ class Settings(BaseSettings):
             query={"async_fallback": "true"},
         )
 
-    def redis_url(self, page):
-        return f"redis://:{self.REDIS_PASSWORD}@wave_redis:6379/{page}"
-
-    model_config = SettingsConfigDict(
-        env_file="../.env",
-        extra="ignore",
-    )
+    # @property
+    # def redis_url(self, db: int = 0) -> URL:
+    #     return URL.build(
+    #         scheme="redis",
+    #         host="wave_redis",
+    #         port=self.REDIS_PORT,
+    #         password=self.REDIS_PASSWORD,
+    #         path=f"/{db}",
+    #     )
 
 
 settings = Settings()  # pyright: ignore

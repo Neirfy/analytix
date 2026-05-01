@@ -8,8 +8,8 @@ from core.security.jwks import jwks_cache
 
 class JWTMiddleware(BaseHTTPMiddleware):
     PUBLIC_PATHS = (
-        "/authn/login",
-        "/authn/register",
+        # "/authn/login",
+        # "/authn/register",
         "/docs",
         "/redoc",
         "/openapi.json",
@@ -25,10 +25,10 @@ class JWTMiddleware(BaseHTTPMiddleware):
 
         if (
             path in self.PUBLIC_PATHS
-            # or any(path.startswith(p + "/") for p in self.PUBLIC_PATHS)
-            or path.startswith("/docs")
-            or path.startswith("/openapi.json")
-            or path.startswith("/redoc")
+            or any(path.startswith(p + "/") for p in self.PUBLIC_PATHS)
+            # or path.startswith("/docs")
+            # or path.startswith("/openapi.json")
+            # or path.startswith("/redoc")
         ):
             return await call_next(request)
 
