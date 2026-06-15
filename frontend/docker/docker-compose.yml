@@ -1,0 +1,102 @@
+# services:
+#   core:
+#     container_name: core-app
+#     build:
+#       # context: ./../core-app
+#       context: ..
+#       dockerfile: docker/dockerfile
+#     ports:
+#       - "3000:80"
+#     depends_on:
+#       - user-app
+
+#   # auth:
+#   #   build: ./user/auth
+#   #   ports:
+#   #     - "3001:80"
+
+#   user-app:
+#     container_name: user-app
+#     build: 
+#       context: ./../user-app
+#       dockerfile: Dockerfile
+#     ports:
+#       - "3001:80"
+
+#   # profile:
+#   #   container_name: profile-app
+#   #   build: 
+#   #     context: ./../profile-app
+#   #     dockerfile: Dockerfile
+#   #   ports:
+#   #     - "3002:80"
+
+#   # calendar:
+#   #   container_name: calendar-app
+#   #   build: 
+#   #     context: ./../calendar-app
+#   #     dockerfile: Dockerfile
+#   #   ports:
+#   #     - "3003:80"
+
+#   # dashboard:
+#   #   container_name: dashboard-app
+#   #   build: 
+#   #     context: ./../dashboard-app
+#   #     dockerfile: Dockerfile
+#   #   ports:
+#   #     - "3004:80"
+
+#   # chat:
+#   #   container_name: chat-app
+#   #   build: 
+#   #     context: ./../chat-app
+#   #     dockerfile: Dockerfile
+#   #   ports:
+#   #     - "3005:80"
+
+#   # reports:
+#   #   container_name: reports-app
+#   #   build: 
+#   #     context: ./../reports-app
+#   #     dockerfile: Dockerfile
+#   #   ports:
+#   #     - "3006:80"
+version: "3.9"
+
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - core
+      - user
+      # - profile
+
+  core:
+    container_name: core-app
+    build: ./../core-app
+    command: npm run serve
+    ports:
+      - "3000:3000"
+    networks:
+      - mf
+
+  user:
+    container_name: user-app
+    build: ./../user-app
+    command: npm run serve
+    ports:
+      - "3001:3001"
+    networks:
+      - mf
+
+  # profile:
+  #   build: ./../profile
+  #   command: vite --host 0.0.0.0 --port 3002
+
+networks:
+  mf:

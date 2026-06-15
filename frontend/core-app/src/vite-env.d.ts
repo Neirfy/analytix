@@ -1,0 +1,6 @@
+declare module "user/App"
+declare module "profile/App"
+declare module "calendar/App"
+declare module "dashboard/App"
+declare module "chat/App"
+declare module "reports/App"
